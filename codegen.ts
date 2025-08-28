@@ -15,6 +15,8 @@ const config: CodegenConfig = {
       preset: "client-preset",
     },
   },
+  debug: true,
+  verbose: true
 };
 
 export default config;
