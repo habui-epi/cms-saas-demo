@@ -10,7 +10,8 @@
     "build:all": "yarn build:communication && yarn codegen && yarn build",
     "build:communication": "vite build --config vite-ci.config.ts",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "download:schema": "node ./download-schema.js"
   },
   "dependencies": {
     "@apollo/client": "^3.10.4",
@@ -19,6 +20,7 @@
     "graphql": "^16.8.1",
     "html2canvas-pro": "^1.5.8",
     "next": "^15.0.3",
+    "node-fetch": "^3.3.2",
     "object-hash": "^3.0.0",
     "react": "^18",
     "react-dom": "^18"
