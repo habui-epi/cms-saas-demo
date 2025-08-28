@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "codegen": "graphql-codegen",
+    "codegen:clean": "rimraf src/generated/graphql",
+    "codegen": "yarn codegen:clean && graphql-codegen --debug --verbose",
     "dev": "next dev --experimental-https",
     "build": "next build",
     "build:all": "yarn build:communication && yarn codegen && yarn build",
