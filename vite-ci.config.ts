@@ -1,7 +1,9 @@
 import { defineConfig } from "vite";
 import path from "path";
+import tsconfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig({
+  plugins: [tsconfigPaths()],
   build: {
     copyPublicDir: false,
     lib: {
@@ -19,6 +21,12 @@ export default defineConfig({
         entryFileNames: "[name].js",
         chunkFileNames: "[name].js",
       },
+    },
+  },
+  resolve: {
+    alias: {
+      '@generated/graphql/gql': '/src/generated/graphql/gql.ts',
+      '@generated/graphql': '/src/generated/graphql/graphql.ts',
     },
   },
   esbuild: {

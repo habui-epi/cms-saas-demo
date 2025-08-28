@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
@@ -14,7 +15,7 @@
     "incremental": true,
     "paths": {
       "@generated/graphql": ["./src/generated/graphql/graphql.ts"],
-      "@generated/graphql/*": ["./src/generated/graphql/*"],
+      "@generated/graphql/gql": ["./src/generated/graphql/gql.ts"],
       "@helpers": ["./src/helpers"],
       "@helpers/*": ["./src/helpers/*"],
       "@context": ["./src/context"],
@@ -28,6 +29,12 @@
     },
     "target": "ES2017"
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "download-schema.js"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "download-schema.js",
+    "generated/*"
+  ],
   "exclude": ["node_modules"]
 }

@@ -23,7 +23,6 @@ export const ExperienceTemplate: React.FC<ExperienceTemplateProps> = ({ contentG
   const { data, refetch, error, loading } = useQuery(ExperienceQuery, {
     variables: queryVariables,
     notifyOnNetworkStatusChange: true,
-    errorPolicy: "ignore",
     onError: (error) => {
       console.warn("[QUERY] Error fetching Experience", error);
       setIsLoading(false);
@@ -31,6 +30,8 @@ export const ExperienceTemplate: React.FC<ExperienceTemplateProps> = ({ contentG
     },
     onCompleted: (data) => {
       console.log("[QUERY] Query finished with variables", queryVariables, data);
+      console.log("[QUERY] Query finished with variables", { version, locale, url, error });
+      console.log("[QUERY] Query result", data?.content?.items);
       setIsLoading(false);
     },
   });
@@ -75,7 +76,7 @@ export const ExperienceTemplate: React.FC<ExperienceTemplateProps> = ({ contentG
 
   return (
     <article className={classes}>
-      {sections.map((section) => {
+      {sections.map((section: any) => {
         if (section) {
           if (section.__typename === "CompositionStructureNode") {
             return <SectionTemplate section={section as SectionNodeFragment} key={section.key} />

@@ -24,7 +24,7 @@ export const HeaderTemplate: React.FC<HeaderTemplateProps> = () => {
     if (!data || !items || items.length === 0) {
       return [];
     }
-    return items.filter(Boolean).map((i) => ({
+    return items.filter(Boolean).map((i: any) => ({
       name: i!.item?.displayName,
       url: i!.item?.url?.default,
     }));

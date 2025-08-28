@@ -2,12 +2,13 @@
   "name": "cms-visual-builder-hello-world",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "codegen:clean": "rimraf src/generated/graphql",
-    "codegen": "yarn codegen:clean && graphql-codegen --debug --verbose",
+    "codegen": "yarn codegen:clean && graphql-codegen",
     "dev": "next dev --experimental-https",
     "build": "next build",
-    "build:all": "yarn build:communication && yarn codegen && yarn build",
+    "build:all": "yarn build:communication && yarn codegen && node postprocess-types.cjs && yarn build",
     "build:communication": "vite build --config vite-ci.config.ts",
     "start": "next start",
     "lint": "next lint",
@@ -15,6 +16,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.10.4",
+    "@graphql-codegen/typescript-react-apollo": "^4.3.3",
     "clsx": "^2.1.1",
     "dom-to-image-more": "^3.5.0",
     "graphql": "^16.8.1",
@@ -23,13 +25,13 @@
     "node-fetch": "^3.3.2",
     "object-hash": "^3.0.0",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "vite-tsconfig-paths": "^5.1.4"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "^5.0.2",
     "@graphql-codegen/client-preset": "^4.2.6",
     "@graphql-codegen/typescript": "^4.1.6",
-    "@graphql-codegen/typescript-graphql-request": "^6.3.0",
     "@graphql-codegen/typescript-operations": "^4.6.1",
     "@parcel/watcher": "^2.4.1",
     "@types/node": "^20",

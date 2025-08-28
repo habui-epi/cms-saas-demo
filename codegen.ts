@@ -8,11 +8,11 @@ const graphSingleKey = process.env.GRAPH_SINGLE_KEY;
 
 const config: CodegenConfig = {
   schema: `https://${graphUrl}/content/v2?auth=${graphSingleKey}`,
-  documents: ["src/**/*.{ts,tsx}"],
+  documents: ["src/**/*.{ts,tsx,graphql,gql}"],
   ignoreNoDocuments: true,
   generates: {
     "./src/generated/graphql/": {
-      plugins: ['typescript', 'typescript-operations'],
+      preset: "client-preset",
       config: {
         namingConvention: 'keep',
         extractAllFieldsToTypes: true
