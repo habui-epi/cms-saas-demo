@@ -12,7 +12,11 @@ const config: CodegenConfig = {
   ignoreNoDocuments: true,
   generates: {
     "./src/generated/graphql/": {
-      preset: "client-preset",
+      plugins: ['typescript', 'typescript-operations'],
+      config: {
+        namingConvention: 'keep',
+        extractAllFieldsToTypes: true
+      },
     },
   },
   debug: true,
