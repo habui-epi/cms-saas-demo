@@ -1,0 +1,1 @@
+export { SEOComponent } from './seo.component';

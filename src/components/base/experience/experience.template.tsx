@@ -7,6 +7,7 @@ import { ExperienceQuery } from "./experience.graphql";
 import { GetExperienceStyles } from "./experience.style";
 import { useGlobalContext } from "@context";
 import { ElementTemplate } from "../element/element.template";
+import { SEOComponent } from "../seo";
 
 interface ExperienceTemplateProps {
   contentGuid?: string | null; // Content GUID
@@ -66,6 +67,26 @@ export const ExperienceTemplate: React.FC<ExperienceTemplateProps> = ({ contentG
     return GetExperienceStyles(experience?.composition?.displaySettings as CompositionDisplaySetting[]);
   }, [experience]);
 
+  const seoData = useMemo(() => {
+    if (experience?.__typename === 'AiSeoGeoExperience') {
+      const seoExperience = experience as any;
+      return {
+        title: seoExperience.Title,
+        metaTitle: seoExperience.MetaTitle,
+        metaDescription: seoExperience.MetaDescription,
+        keywords: seoExperience.Keywords,
+        canonicalUrl: seoExperience.CanonicalUrl?.default,
+        ogTitle: seoExperience.OgTitle,
+        ogDescription: seoExperience.OgDescription,
+        ogImage: seoExperience.OgImage?.url?.default,
+        twitterTitle: seoExperience.TwitterTitle,
+        twitterDescription: seoExperience.TwitterDescription,
+        twitterImage: seoExperience.TwitterImage?.url?.default,
+      };
+    }
+    return null;
+  }, [experience]);
+
   // if (error) {
   //   return <div>Error: {error.message}</div>;
   // }
@@ -75,17 +96,20 @@ export const ExperienceTemplate: React.FC<ExperienceTemplateProps> = ({ contentG
   }
 
   return (
-    <article className={classes}>
-      {sections.map((section: any) => {
-        if (section) {
-          if (section.__typename === "CompositionStructureNode") {
-            return <SectionTemplate section={section as SectionNodeFragment} key={section.key} />
+    <>
+      {seoData && <SEOComponent {...seoData} />}
+      <article className={classes}>
+        {sections.map((section: any) => {
+          if (section) {
+            if (section.__typename === "CompositionStructureNode") {
+              return <SectionTemplate section={section as SectionNodeFragment} key={section.key} />
+            }
+            else {
+              return <ElementTemplate element={section as ElementNodeFragment} key={section.key} />
+            }
           }
-          else {
-            return <ElementTemplate element={section as ElementNodeFragment} key={section.key} />
-          }
-        }
-      })}
-    </article>
+        })}
+      </article>
+    </>
   );
 };
