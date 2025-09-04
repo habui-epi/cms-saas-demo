@@ -1,5 +1,5 @@
 import { GetServerSideProps } from 'next';
-import { getHomePage } from "./homePageQuery";
+import { getHomePage } from "../homePageQuery";
 
 export const getServerSideProps: GetServerSideProps = async ({ res }) => {
     res.setHeader('Content-Type', 'text/plain');

@@ -1,5 +1,5 @@
 import { graphql } from "@generated/graphql/gql";
-import { client } from "../client";
+import { client } from "./client";
 
 export async function getHomePage() {
     const homePageQuery = graphql(/* GraphQL */ `
