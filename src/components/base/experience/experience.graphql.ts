@@ -41,10 +41,10 @@ export const ExperienceQuery = graphql(/* GraphQL */ `
             ...ElementNode
           }
         }
-        ... on AiSeoGeoExperience {
-          ...SEOFragment
-          ...GeoFragment
-        }
+        # ... on AiSeoGeoExperience {
+        #   ...SEOFragment
+        #   ...GeoFragment
+        # }
       }
     }
   }

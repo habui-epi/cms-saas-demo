@@ -8,10 +8,13 @@ export const ImageFragment = graphql(/* GraphQL */ `
         graph
       }
       item {
-        ... on cmp_PublicImageAsset {
-          Title
-          AltText
-          Url
+        ... on _Image {
+          _assetMetadata {
+            url
+          }
+          _metadata {
+            displayName
+          }
         }
       }
     }

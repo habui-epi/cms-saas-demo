@@ -5,7 +5,9 @@ export const getServerSideProps: GetServerSideProps = async ({ res }) => {
     res.setHeader('Content-Type', 'text/plain');
     const homePage = await getHomePage();
 
-    const isLLMEnabled = homePage?.EnableLLMConfiguration;
+    // EnableLLMConfiguration and ApplicationGEO only available in AiSeoGeoExperience type
+    // Production doesn't have this type, so we access them safely
+    const isLLMEnabled = (homePage as any)?.EnableLLMConfiguration;
 
     if (homePage) {
         console.log(`Found home page: ${homePage._metadata?.displayName} at ${homePage._metadata?.url?.default}`);
@@ -20,8 +22,11 @@ Disallow: /
 # No content available for LLM training or usage
 `;
 
-    if (isLLMEnabled && llmsContent) {
-        llmsContent = homePage?.ApplicationGEO;
+    if (isLLMEnabled) {
+        const applicationGEO = (homePage as any)?.ApplicationGEO;
+        if (applicationGEO) {
+            llmsContent = applicationGEO;
+        }
     }
 
     res.write(llmsContent);

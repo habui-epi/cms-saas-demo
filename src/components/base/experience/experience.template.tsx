@@ -25,29 +25,21 @@ export const ExperienceTemplate: React.FC<ExperienceTemplateProps> = ({ contentG
   const { data, refetch, error, loading } = useQuery(ExperienceQuery, {
     variables: queryVariables,
     notifyOnNetworkStatusChange: true,
-    onError: (error) => {
-      console.warn("[QUERY] Error fetching Experience", error);
-      setIsLoading(false);
-      // refetch(queryVariables);
-    },
-    onCompleted: (data) => {
-      console.log("[QUERY] Query finished with variables", queryVariables, data);
-      console.log("[QUERY] Query finished with variables", { version, locale, url, error });
-      console.log("[QUERY] Query result", data?.content?.items);
-      
-      // Log JSON-LD specific data from query result
-      const firstItem = data?.content?.items?.[0];
-      if (firstItem) {
-        console.log("[QUERY] First item details", {
-          typename: firstItem.__typename,
-          hasJsonLdTemplates: !!(firstItem as any).JsonLdTemplates,
-          jsonLdTemplates: (firstItem as any).JsonLdTemplates
-        });
-      }
-      
-      setIsLoading(false);
-    },
+    errorPolicy: "ignore",
   });
+
+  // Handle query completion and errors with useEffect
+  useEffect(() => {
+    if (!loading) {
+      if (error) {
+        console.warn("[QUERY] Error fetching Experience", error);
+      } else if (data) {
+        console.log("[QUERY] Query finished with variables", queryVariables, data);
+      }
+
+      setIsLoading(false);
+    }
+  }, [loading, error, data, setIsLoading]);
 
   const experience = useMemo(() => {
     const items = data?.content?.items;
@@ -71,7 +63,7 @@ export const ExperienceTemplate: React.FC<ExperienceTemplateProps> = ({ contentG
     if (loading) {
       setIsLoading(true);
     }
-  }, [loading]);
+  }, [loading, setIsLoading]);
 
   const sections = useMemo(() => experience?.composition?.sections ?? [], [experience]);
 
@@ -80,7 +72,9 @@ export const ExperienceTemplate: React.FC<ExperienceTemplateProps> = ({ contentG
   }, [experience]);
 
   const seoData = useMemo(() => {
-    if (experience?.__typename === 'AiSeoGeoExperience') {
+    // AiSeoGeoExperience type not available in production Content Graph
+    // SEO features disabled for production compatibility
+    if ((experience as any)?.__typename === 'AiSeoGeoExperience') {
       const seoExperience = experience as any;
       return {
         title: seoExperience.Title,
@@ -100,19 +94,21 @@ export const ExperienceTemplate: React.FC<ExperienceTemplateProps> = ({ contentG
   }, [experience]);
 
   const jsonLdData = useMemo(() => {
-    console.log('[JSON-LD] Processing jsonLdData', { 
+    console.log('[JSON-LD] Processing jsonLdData', {
       experienceType: experience?.__typename,
-      hasExperience: !!experience 
+      hasExperience: !!experience
     });
-    
-    if (experience?.__typename === 'AiSeoGeoExperience') {
+
+    // AiSeoGeoExperience type not available in production Content Graph
+    // JSON-LD features disabled for production compatibility
+    if ((experience as any)?.__typename === 'AiSeoGeoExperience') {
       const geoExperience = experience as any;
       console.log('[JSON-LD] AiSeoGeoExperience detected', {
         hasJsonLdTemplates: !!geoExperience.JsonLdTemplates,
         jsonLdTemplatesType: typeof geoExperience.JsonLdTemplates,
         jsonLdTemplatesValue: geoExperience.JsonLdTemplates
       });
-      
+
       if (geoExperience.JsonLdTemplates) {
         console.log('[JSON-LD] Returning JsonLdTemplates', geoExperience.JsonLdTemplates);
         return geoExperience.JsonLdTemplates;
@@ -122,7 +118,7 @@ export const ExperienceTemplate: React.FC<ExperienceTemplateProps> = ({ contentG
     } else {
       console.log('[JSON-LD] Experience is not AiSeoGeoExperience type', experience?.__typename);
     }
-    
+
     console.log('[JSON-LD] Returning null for jsonLdData');
     return null;
   }, [experience]);

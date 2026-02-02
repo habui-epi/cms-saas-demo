@@ -10,21 +10,25 @@ export interface HeaderTemplateProps {}
 export const HeaderTemplate: React.FC<HeaderTemplateProps> = () => {
   const [queryVariables, setQueryVariables] = useState({ host: "" });
 
-  const { data } = useQuery(NavigationItemsQuery, {
+  const { data, loading } = useQuery(NavigationItemsQuery, {
     skip: !queryVariables.host,
     variables: queryVariables,
     notifyOnNetworkStatusChange: true,
-    onCompleted: () => {
-      console.log("[QUERY] Obtained navigation items", queryVariables);
-    },
   });
+
+  // Handle query completion with useEffect
+  useEffect(() => {
+    if (!loading && data) {
+      console.log("[QUERY] Obtained navigation items", queryVariables);
+    }
+  }, [loading, data, queryVariables]);
 
   const navigationItems = useMemo(() => {
     const items = data?.content?.items;
     if (!data || !items || items.length === 0) {
       return [];
     }
-    return items.filter(Boolean).map((i: any) => ({
+    return items.filter(Boolean).map((i) => ({
       name: i!.item?.displayName,
       url: i!.item?.url?.default,
     }));

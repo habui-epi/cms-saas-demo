@@ -2,9 +2,11 @@ import { graphql } from "@generated/graphql/gql";
 import { client } from "./client";
 
 export async function getHomePage() {
+    // Using _Experience instead of AiSeoGeoExperience for production compatibility
+    // Production Content Graph (cg.optimizely.com) doesn't have AiSeoGeoExperience type
     const homePageQuery = graphql(/* GraphQL */ `
         query GetLLMConfig {
-            content: AiSeoGeoExperience(
+            content: _Experience(
                 limit: 1
                 where: {
                     _or: [
@@ -18,10 +20,6 @@ export async function getHomePage() {
                 }
             ) {
                 items {
-                    EnableLLMConfiguration
-                    EnableRobotsConfiguration
-                    ApplicationGEO
-                    ApplicationSEO
                     _metadata {
                         url {
                             default
@@ -32,7 +30,7 @@ export async function getHomePage() {
             }
         }
     `);
-    
+
     const { data } = await client.query({
         query: homePageQuery,
     });

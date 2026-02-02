@@ -3,13 +3,19 @@ import fetch from "node-fetch";
 import * as fs from "fs";
 import * as dotenv from "dotenv";
 
-dotenv.config({ path: ".env.local" });
+// Check if 'prod' argument is passed to use .env.production
+const isProd = process.argv.includes('prod');
+const envFile = isProd ? '.env.production' : '.env.local';
+
+dotenv.config({ path: envFile });
 
 const GRAPH_URL = process.env.GRAPH_URL;
 const GRAPH_SINGLE_KEY = process.env.GRAPH_SINGLE_KEY;
 
+console.log(`Loading schema from ${envFile} (${GRAPH_URL})`);
+
 if (!GRAPH_URL || !GRAPH_SINGLE_KEY) {
-    console.error("GRAPH_URL or GRAPH_SINGLE_KEY is missing in .env.local");
+    console.error(`GRAPH_URL or GRAPH_SINGLE_KEY is missing in ${envFile}`);
     process.exit(1);
 }
 

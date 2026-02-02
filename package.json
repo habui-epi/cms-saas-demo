@@ -13,16 +13,18 @@
     "build:communication": "vite build --config vite-ci.config.ts",
     "start": "next start",
     "lint": "next lint",
-    "download:schema": "node ./download-schema.js"
+    "download:schema": "node ./download-schema.js",
+    "download:prod:schema": "node ./download-schema.js --env production"
   },
   "dependencies": {
     "@apollo/client": "^3.10.4",
     "@graphql-codegen/typescript-react-apollo": "^4.3.3",
+    "@vercel/config": "^0.0.28",
     "clsx": "^2.1.1",
     "dom-to-image-more": "^3.5.0",
     "graphql": "^16.8.1",
     "html2canvas-pro": "^1.5.8",
-    "next": "^15.0.3",
+    "next": "^15.3.6",
     "node-fetch": "^3.3.2",
     "object-hash": "^3.0.0",
     "react": "^18",
@@ -30,7 +32,7 @@
     "vite-tsconfig-paths": "^5.1.4"
   },
   "devDependencies": {
-    "@graphql-codegen/cli": "^5.0.2",
+    "@graphql-codegen/cli": "^6.1.1",
     "@graphql-codegen/client-preset": "^4.2.6",
     "@graphql-codegen/typescript": "^4.1.6",
     "@graphql-codegen/typescript-operations": "^4.6.1",
@@ -39,6 +41,7 @@
     "@types/object-hash": "^3.0.6",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "autoprefixer": "^10",
     "cross-env": "^7.0.3",
     "postcss": "^8",
     "rimraf": "^6.0.1",
@@ -47,5 +50,5 @@
     "typescript": "^5",
     "vite": "^5.4.11"
   },
-  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
+  "packageManager": "yarn@4.12.0"
 }

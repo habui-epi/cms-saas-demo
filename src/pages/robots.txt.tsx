@@ -9,7 +9,10 @@ Allow: /
 Sitemap: ${process.env.NEXT_PUBLIC_SITE_URL || 'https://localhost:3000'}/sitemap.xml`;
 
     const homePage = await getHomePage();
-    const isRobotsEnabled = homePage?.EnableRobotsConfiguration;
+
+    // EnableRobotsConfiguration only available in AiSeoGeoExperience type
+    // Production doesn't have this type, so we access it safely
+    const isRobotsEnabled = (homePage as any)?.EnableRobotsConfiguration;
 
     if (homePage) {
         console.log(`Found home page: ${homePage._metadata?.displayName} at ${homePage._metadata?.url?.default}`);
